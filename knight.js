@@ -17,7 +17,7 @@ function knightMoves(start, end) {
   // BFS Setup
 
   // For the queue, the setup will be [[current position of Knight], [positions visited so far]]
-  const queue = [[start], [[start]]];
+  const queue = [[start, [start]]];
   // Use a set here for fast lookups compared to an array
   const visited = new Set();
   console.log(start.toString());
@@ -35,7 +35,23 @@ function knightMoves(start, end) {
       pathSofar.forEach((position) => console.log(position));
       return pathSofar;
     }
+
+    // Try all possible knight moves
+    for (const [dx, dy] of moves) {
+      const newX = x + dx;
+      const newY = y + dy;
+      const newPosition = [newX, newY];
+
+      if (isValidPosition(newX, newY) && !visited.has(newPosition.toString())) {
+        visited.add(newPosition.toString());
+        queue.push([newPosition, [...pathSofar, newPosition]]);
+      }
+    }
   }
+}
+
+function isValidPosition(x, y) {
+  return x >= 0 && x < 8 && y >= 0 && y < 8;
 }
 
 // Testing
